@@ -57,6 +57,27 @@ _Include the status code and the response body._
   """
 
 
+ # GET /artist
+  #  Expected response (200 OK):
+  """
+  Pixies, ABBA, Taylor Swift, Nina Simone
+  """
+
+ # POST /artist
+  #   name: "Wild nothing"
+  #   genre: Indie
+  #  Expected response (200 OK):
+  """
+  (no content)
+  """
+
+  # GET /albums
+  #  Expected response (200 OK):
+  """
+  Pixies, ABBA, Taylor Swift, Nina Simone, Wild nothing
+  """
+
+
 ```
 
 ## 3. Test-drive the Route

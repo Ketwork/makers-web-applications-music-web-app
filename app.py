@@ -3,6 +3,8 @@ from flask import Flask, request
 from lib.database_connection import get_flask_database_connection
 from lib.album_repository import AlbumRepository
 from lib.album import Album
+from lib.artist_repository import ArtistRepository
+from lib.artist import Artist
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -36,19 +38,27 @@ def get_albums():
         f"{album}" for album in respository.all()
     )
 
+@app.route('/artists', methods=['GET'])
+def get_all_artist_names():
+    connection = get_flask_database_connection(app)
+    repository = ArtistRepository(connection)
+
+    return ", ".join([artist.name for artist in repository.all()])
+
+@app.route('/artists', methods=['POST'])
+def create_artist():
+    connection = get_flask_database_connection(app)
+    repository = ArtistRepository(connection)
+
+    artist = Artist(
+        None,
+        request.form['name'],
+        request.form['genre'])
+    repository.create(artist)
+    return '', 200
+    
 
 
-
-
-# == Example Code Below ==
-
-# GET /emoji
-# Returns a emojiy face
-# Try it:
-#   ; curl http://127.0.0.1:5001/emoji
-# @app.route('/emoji', methods=['GET'])
-# def get_emoji():
-#     return ":)"
 
 # This imports some more example routes for you to see how they work
 # You can delete these lines if you don't need them.

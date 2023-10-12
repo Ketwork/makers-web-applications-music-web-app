@@ -44,6 +44,22 @@ def test_post_albums_with_no_data(db_connection, web_client):
         "Album(1, Doolittle, 1989, 1)"
 
 
+def test_list_all_artists(db_connection, web_client):
+    db_connection.seed("seeds/record_store.sql")
+    response = web_client.get('/artists')
+    assert response.status_code == 200
+    assert response.data.decode('utf-8') == 'Pixies, ABBA, Taylor Swift, Nina Simone'
 
+def test_create_artist(db_connection, web_client):
+    db_connection.seed("seeds/record_store.sql")
+    post_response = web_client.post("/artists", data={
+        'name': 'Wild nothing',
+        'genre': 'Indie'
+    })
+    assert post_response.status_code == 200
+    assert post_response.data.decode('utf-8') == ""
 
+    get_response = web_client.get("/artists")
+    assert get_response.status_code == 200
+    assert get_response.data.decode('utf-8') == 'Pixies, ABBA, Taylor Swift, Nina Simone, Wild nothing'
 

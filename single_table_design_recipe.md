@@ -15,25 +15,37 @@ _Copy this recipe template to design and create a database table from a specific
 
   Your test should assert that the new album is present in the list of records returned by GET /albums.
 
+
+    # Request:
+    GET /artists
+
+    # Expected response (200 OK)
+    Pixies, ABBA, Taylor Swift, Nina Simone
+
+    # Request:
+    POST /artists
+
+    # With body parameters:
+    name=Wild nothing
+    genre=Indie
+
+    # Expected response (200 OK)
+    (No content)
+
+    # Then subsequent request:
+    GET /artists
+
+    # Expected response (200 OK)
+    Pixies, ABBA, Taylor Swift, Nina Simone, Wild nothing
+
 ## 1. Extract nouns from the user stories or specification
 
-```
-# EXAMPLE USER STORY:
-# (analyse only the relevant part - here, the final line).
 
-As a music lover,
-So I can organise my records,
-I want to keep a list of albums' titles.
-
-As a music lover,
-So I can organise my records,
-I want to keep a list of albums' release years.
-```
 
 ```
 Nouns:
 
-album, title, release year, artist, id
+album, title, release year, artist, genre, id
 ```
 
 ## 2. Infer the Table Name and Columns
@@ -43,21 +55,29 @@ Put the different nouns in this table. Replace the example with your own nouns.
 | Record                | Properties          |
 | --------------------- | ------------------- |
 | album                 | id, title, release year, artist_id |
+| artist                | id, name, genre
 
 Name of the table (always plural): `albums`
 
 Column names: `title`, `release_year`, `aritist_id`, `id`
 
+Name of the table (always plural): `artists`
+
+Column names: `name`, `genre`
+
 ## 3. Decide the column types
 
 
 ```
-# EXAMPLE:
 
 id: SERIAL
 title: text
 release_year: int
 artist_id: int
+
+id: SERIAL
+name: text
+genre: text
 ```
 
 ## 4. Write the SQL
@@ -73,6 +93,12 @@ CREATE TABLE albums (
   title text,
   release_year int,
   artist_id int
+);
+
+CREATE TABLE artists (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255),
+    genre VARCHAR(255)
 );
 ```
 
